@@ -47,6 +47,9 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},suffix=-alpine,enable=${{ matrix.image == 'alpine3.22' }}
             type=semver,pattern={{major}}.{{minor}},suffix=-slim,enable=${{ matrix.image == 'slim-trixie' }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
