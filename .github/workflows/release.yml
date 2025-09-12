@@ -1,0 +1,88 @@
+name: Publish Docker image
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    strategy:
+      matrix:
+        include:
+          - dir: Dockerfiles/trixie
+            image: trixie
+            tags: trixie latest
+          - dir: Dockerfiles/trixie/slim
+            image: slim-trixie
+            tags: slim-trixie slim
+          - dir: Dockerfiles/bookworm
+            image: bookworm
+            tags: bookworm
+          - dir: Dockerfiles/bookworm/slim
+            image: slim-bookworm
+            tags: slim-bookworm
+          - dir: Dockerfiles/bullseye
+            image: bullseye
+            tags: bullseye
+          - dir: Dockerfiles/bullseye/slim
+            image: slim-bullseye
+            tags: slim-bullseye
+          - dir: Dockerfiles/alpine3.22
+            image: alpine3.22
+            tags: alpine3.22 alpine
+          - dir: Dockerfiles/alpine3.21
+            image: alpine3.21
+            tags: alpine3.21
+          - dir: Dockerfiles/alpine3.20
+            image: alpine3.20
+            tags: alpine3.20
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: veryllang/veryl
+          flavor: |
+            latest=false
+          tags: |
+            type=semver,pattern={{version}},suffix=-${{ matrix.image }}
+            type=semver,pattern={{version}},suffix=-alpine,enable=${{ matrix.image == 'alpine3.22' }}
+            type=semver,pattern={{version}},suffix=-slim,enable=${{ matrix.image == 'slim-trixie' }}
+            type=semver,pattern={{major}}.{{minor}},suffix=-${{ matrix.image }}
+            type=semver,pattern={{major}}.{{minor}},suffix=-alpine,enable=${{ matrix.image == 'alpine3.22' }}
+            type=semver,pattern={{major}}.{{minor}},suffix=-slim,enable=${{ matrix.image == 'slim-trixie' }}
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ${{ matrix.dir }}
+          file: ./Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }} ${{ matrix.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+#      - name: Generate artifact attestation
+#        uses: actions/attest-build-provenance@v3
+#        with:
+#          subject-name: index.docker.io/veryllang/veryl
+#          subject-digest: ${{ steps.push.outputs.digest }}
+#          push-to-registry: true
