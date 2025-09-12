@@ -18,23 +18,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - dir: Dockerfiles/trixie
+          - dir: ./Dockerfiles/trixie
             image: trixie
-          - dir: Dockerfiles/trixie/slim
+          - dir: ./Dockerfiles/trixie/slim
             image: slim-trixie
-          - dir: Dockerfiles/bookworm
+          - dir: ./Dockerfiles/bookworm
             image: bookworm
-          - dir: Dockerfiles/bookworm/slim
+          - dir: ./Dockerfiles/bookworm/slim
             image: slim-bookworm
-          - dir: Dockerfiles/bullseye
+          - dir: ./Dockerfiles/bullseye
             image: bullseye
-          - dir: Dockerfiles/bullseye/slim
+          - dir: ./Dockerfiles/bullseye/slim
             image: slim-bullseye
-          - dir: Dockerfiles/alpine3.22
+          - dir: ./Dockerfiles/alpine3.22
             image: alpine3.22
-          - dir: Dockerfiles/alpine3.21
+          - dir: ./Dockerfiles/alpine3.21
             image: alpine3.21
-          - dir: Dockerfiles/alpine3.20
+          - dir: ./Dockerfiles/alpine3.20
             image: alpine3.20
     steps:
       - name: Check out the repo
