@@ -43,9 +43,11 @@ jobs:
             type=semver,pattern={{version}},suffix=-${{ matrix.image }}
             type=semver,pattern={{version}},suffix=-alpine,enable=${{ matrix.image == 'alpine3.22' }}
             type=semver,pattern={{version}},suffix=-slim,enable=${{ matrix.image == 'slim-trixie' }}
+            type=semver,pattern={{version}},enable=${{ matrix.image == 'trixie' }}
             type=semver,pattern={{major}}.{{minor}},suffix=-${{ matrix.image }}
             type=semver,pattern={{major}}.{{minor}},suffix=-alpine,enable=${{ matrix.image == 'alpine3.22' }}
             type=semver,pattern={{major}}.{{minor}},suffix=-slim,enable=${{ matrix.image == 'slim-trixie' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ matrix.image == 'trixie' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
