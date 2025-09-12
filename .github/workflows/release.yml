@@ -11,9 +11,8 @@ jobs:
     name: Release Docker image
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm]
         image: [trixie, bookworm, bullseye, slim-trixie, slim-bookworm, slim-bullseye, alpine3.22, alpine3.21, alpine3.20]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
@@ -52,6 +51,7 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
+          platforms: linux/amd64,linux/arm64
           context: images/${{ matrix.image }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
