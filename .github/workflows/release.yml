@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         image: [trixie, bookworm, bullseye, slim-trixie, slim-bookworm, slim-bullseye, alpine3.22, alpine3.21, alpine3.20]
+      max-parallel: 1
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -65,9 +66,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v3
-        with:
-          subject-name: index.docker.io/veryllang/veryl
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
+#      - name: Generate artifact attestation
+#        uses: actions/attest-build-provenance@v3
+#        with:
+#          subject-name: index.docker.io/veryllang/veryl
+#          subject-digest: ${{ steps.push.outputs.digest }}
+#          push-to-registry: true
