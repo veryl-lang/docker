@@ -11,7 +11,7 @@ jobs:
     name: Release Docker image
     strategy:
       matrix:
-        image: [trixie, bookworm, bullseye, slim-trixie, slim-bookworm, slim-bullseye, alpine3.22, alpine3.21, alpine3.20]
+        image: [alpine3.20, alpine3.21, alpine3.22, slim-bookworm, slim-bullseye, slim-trixie, bullseye, bookworm, trixie]
       max-parallel: 1
     runs-on: ubuntu-latest
     permissions:
@@ -35,9 +35,8 @@ jobs:
         with:
           images: veryllang/veryl
           flavor: |
-            latest=false
+            latest=${{ matrix.image == 'trixie' }}
           tags: |
-            type=raw,value=latest,enable=${{ matrix.image == 'trixie' }}
             type=raw,value=alpine,enable=${{ matrix.image == 'alpine3.22' }}
             type=raw,value=slim,enable=${{ matrix.image == 'slim-trixie' }}
             type=raw,value=${{ matrix.image }}
