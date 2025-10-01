@@ -27,7 +27,8 @@ jobs:
 
       - name: Push tag
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Use PAT because GITHUB_TOKEN doesn't trigger another workflow
+          GITHUB_TOKEN: ${{ secrets.VERYL_DOCKER_PAT }}
         run: |
           git tag ${{ github.event.client_payload.ref }}
           git push origin ${{ github.event.client_payload.ref }}
