@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source=https://github.com/veryl-lang/docker
 
 ENV VERYLUP_HOME=/usr/local/verylup \
     PATH=/usr/local/verylup/bin:$PATH \
-    VERYL_VERSION=0.16.5
+    VERYL_VERSION=0.17.0
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \
