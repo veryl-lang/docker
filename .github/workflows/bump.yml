@@ -5,10 +5,6 @@ on:
     types:
       - release
 
-env:
-  # Use PAT because GITHUB_TOKEN doesn't trigger another workflow
-  GITHUB_TOKEN: ${{ secrets.VERYL_DOCKER_PAT }}
-
 jobs:
   bump:
     permissions:
@@ -17,6 +13,9 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+        with:
+          # Use PAT because GITHUB_TOKEN doesn't trigger another workflow
+          token: ${{ secrets.VERYL_DOCKER_PAT }}
 
       - name: Bump version
         run: |
