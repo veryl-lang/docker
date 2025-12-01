@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source=https://github.com/veryl-lang/docker
 
 ENV VERYLUP_HOME=/usr/local/verylup \
     PATH=/usr/local/verylup/bin:$PATH \
-    VERYL_VERSION=0.17.0
+    VERYL_VERSION=0.17.1
 
 RUN set -eux; \
     apt-get update; \
