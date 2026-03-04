@@ -8,7 +8,7 @@ RUN apk add --no-cache \
 
 ENV VERYLUP_HOME=/usr/local/verylup \
     PATH=/usr/local/verylup/bin:$PATH \
-    VERYL_VERSION=0.18.0
+    VERYL_VERSION=0.19.0
 
 RUN set -eux; \
     apkArch="$(apk --print-arch)"; \
