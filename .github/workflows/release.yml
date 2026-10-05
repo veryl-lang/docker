@@ -11,7 +11,7 @@ jobs:
     name: Release Docker image
     strategy:
       matrix:
-        image: [slim-bookworm, slim-bullseye, slim-trixie, bullseye, bookworm, trixie]
+        image: [slim-bookworm, slim-trixie, bookworm, trixie]
       max-parallel: 1
     runs-on: ubuntu-latest
     permissions:
